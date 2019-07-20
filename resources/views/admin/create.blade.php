@@ -29,10 +29,16 @@
       <div class="form-group">
         <select class="form-control" name="category_id">
           <option value="">Seleziona la categoria del post</option>
-          @foreach ($categories as $value)
-            <option value="{{ $value->id }}">{{ $value->name }}</option>
+          @foreach ($categories as $value_category)
+            <option value="{{ $value_category->id }}">{{ $value_category->name }}</option>
           @endforeach
         </select>
+      </div>
+      <div class="form-group">
+        Tags:
+        @foreach ($tags as $value_tag)
+          <label><input type="checkbox" name="tag_ids[]" value="{{$value_tag->id}}"> {{$value_tag->name}}</label>
+        @endforeach
       </div>
       <button type="submit" class="btn btn-primary">Inserisci</button>
     </form>

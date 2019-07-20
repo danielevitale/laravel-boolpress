@@ -2,7 +2,7 @@
 
 
 @section('content')
-  <a class="btn btn-primary">Crea nuovo post</a>
+  <a href="{{ route('admin.posts.create') }}" class="btn btn-primary">Crea nuovo post</a>
   <div class="container">
     <h1>Elenco dei post</h1>
     <table class="table">
@@ -11,23 +11,29 @@
           <th>ID</th>
           <th>Titolo</th>
           <th>Autore</th>
-          <th>Slug</th>
           <th>Categoria</th>
+          <th>Tag</th>
           <th>Creato il</th>
           <th>Modificato il</th>
         </tr>
       </thead>
-    @forelse ($posts as $post)
+    @forelse ($posts as $value)
       <tr>
-        <td>{{ $post->id }}</td>
-        <td>{{ $post->title }}</td>
-        <td>{{ $post->author }}</td>
-        <td>{{ $post->slug }}</td>
-        <td>{{ !empty($post->category) ? $post->category->name : '-' }}</td>
-        <td>{{ $post->created_at }}</td>
-        <td>{{ $post->updated_at }}</td>
-        <td> <a href="{{route('admin.posts.show', $post->slug)}}">Visualizza</a> <a href="{{route('admin.posts.edit', $post->slug)}}">Modifica</a>
-          <form class="" action="{{route('admin.posts.destroy', $post->id)}}" method="post">
+        <td>{{ $value->id }}</td>
+        <td>{{ $value->title }}</td>
+        <td>{{ $value->author }}</td>
+        <td>{{ !empty($value->category) ? $value->category->name : '-' }}</td>
+        <td>
+          @forelse ($value->tags as $value_tag)
+          {{$value_tag->name}}@if(!$loop->last) @endif
+          @empty
+          -
+          @endforelse
+        </td>
+        <td>{{ $value->created_at }}</td>
+        <td>{{ $value->updated_at }}</td>
+        <td> <a href="{{route('admin.posts.show', $value->slug)}}">Visualizza</a> <a href="{{route('admin.posts.edit', $value->slug)}}">Modifica</a>
+          <form class="" action="{{route('admin.posts.destroy', $value->id)}}" method="post">
             @method('DELETE')
             @csrf
             <input type="submit" name="" value="Cancella">

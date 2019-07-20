@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -22,9 +23,11 @@ class PostController extends Controller
 
     public function create()
     {
-      $dati = Category::all();
+      $dati_category = Category::all();
+      $dati_tag = Tag::all();
       $data = [
-        'categories' => $dati
+        'categories' => $dati_category,
+        'tags' => $dati_tag
       ];
 
       return view('admin.create', $data);
@@ -43,6 +46,7 @@ class PostController extends Controller
       $post = new Post();
       $post->fill($nuovo_post);
       $post->save();
+      $post->tags()->sync($nuovo_post['tag_ids']);
 
       return redirect()->route('admin.posts.index');
     }
@@ -66,9 +70,11 @@ class PostController extends Controller
         abort(404);
       }
       $category = Category::all();
+      $dati_tag = Tag::all();
       $data = [
         'post' => $dati,
-        'categories' => $category
+        'categories' => $category,
+        'tags' => $dati_tag
       ];
 
       return view('admin.edit', $data);
@@ -90,6 +96,7 @@ class PostController extends Controller
         abort(404);
       }
       $post_da_modificare->update($nuovo_post);
+      $post_da_modificare->tags()->sync($nuovo_post['tag_ids']);
 
       return redirect()->route('admin.posts.index');
     }
