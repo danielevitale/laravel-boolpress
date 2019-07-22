@@ -31,14 +31,19 @@
         <select class="form-control" name="category_id">
           <option value="">Seleziona la categoria del post</option>
           @foreach ($categories as $value)
-            <option value="{{ $value->id }}">{{ $value->name }}</option>
+            <option value="{{ $value->id }}" {{ old('category_id') == $value->id ? 'selected' : null }}>{{ $value->name }}</option>
           @endforeach
         </select>
       </div>
       <div class="form-group">
+        {{-- Creo un array contenente i tag del post che si vuole modificare. Pluck consente di ottenere una collection composta da un array di id,
+        to Array trasforma la collection in un array --}}
+        @php
+          $array_tags = ($post->tags->pluck('id')->toArray());
+        @endphp
         Tags:
         @foreach ($tags as $value_tag)
-          <label><input type="checkbox" name="tag_ids[]" value="{{$value_tag->id}}"> {{$value_tag->name}}</label>
+          <label><input type="checkbox" name="tag_ids[]" value="{{$value_tag->id}}" {{(in_array($value_tag->id, old('tag_ids',  $array_tags))) ? 'checked' : null}}> {{$value_tag->name}}</label>
         @endforeach
       </div>
       <button type="submit" class="btn btn-primary">Inserisci</button>
