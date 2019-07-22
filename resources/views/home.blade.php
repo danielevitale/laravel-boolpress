@@ -26,6 +26,7 @@
     @empty
       <h1>Non ci sono post da visualizzare</h1>
     @endforelse
+    {{ $posts->links() }}
 </div>
 
 @endsection

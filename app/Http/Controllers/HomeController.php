@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
   public function index() {
 
-    $dati = Post::all();
+    $dati = Post::paginate(5);
     $data = [
       'posts' => $dati
     ];
